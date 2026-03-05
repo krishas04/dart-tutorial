@@ -14,3 +14,16 @@
   ```
 **Note**: The `bin/` directory is where your executable code lives. `cli.dart` is the entry point of your application.
 Inside, you'll see the `main` function. Every Dart program starts executing from its `main` function.
+
+4. Run your application with the version argument:
+  ```
+  dart bin/cli.dart version
+  ```
+5. Run your application with the help argument:
+  ```
+  dart bin/cli.dart help
+  ```
+6.  Run your application with the search command:
+  ```
+  dart bin/cli.dart search (with or without arguments)
+  ```
