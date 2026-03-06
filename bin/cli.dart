@@ -1,3 +1,5 @@
+import 'dart:io';
+
 const version = '0.0.1';
 void main(List<String> arguments) {
   if (arguments.isEmpty) {
@@ -19,5 +21,17 @@ void printUsage() {
 }
 
 void searchWikipedia(List<String>? arguments) {
-  print("SearchWikipedia received arguments: $arguments");
+  final String articleTitle;
+
+  // If the user didn't pass in arguments, request an article title.
+  if (arguments == null || arguments.isEmpty) {
+    // Await input and provide a default empty string if the input is null.
+    articleTitle = stdin.readLineSync() ?? '';
+  } else {
+    // Otherwise, join the arguments into a single string.
+    articleTitle = arguments.join(' ');
+  }
+  print("Looking for articles about $articleTitle. Please wait.");
+  print('Here you go.');
+  print('Articles on $articleTitle');
 }
