@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
 const version = '0.0.1';
 void main(List<String> arguments) {
@@ -6,9 +7,11 @@ void main(List<String> arguments) {
     print('Hello world!');
   } else if (arguments.first == 'version') {
     print('Version is $version');
-  } else if (arguments.first == 'search') {
+  } else if (arguments.first == 'wikipedia') {
     final inputArgs = arguments.length > 1 ? arguments.sublist(1) : null;
-    searchWikipedia(inputArgs);
+    searchWikipedia(
+      inputArgs,
+    ); //Since main doesn't need to do anything after searchWikipedia completes, you don't need to await it from main. Therefore main doesn't need to be async.
   } else {
     printUsage();
   }
@@ -20,18 +23,34 @@ void printUsage() {
   );
 }
 
-void searchWikipedia(List<String>? arguments) {
+Future<String> getWikipediaArticle(String articleTitle) async {
+  final url = Uri.http(
+    'en.wikipedia.org', // Wikipedia API domain
+    '/api/rest_v1/page/summary/$articleTitle', // API path for article summary
+  );
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+    return response.body;
+  }
+  return 'Error: Failed to fetch article on "$articleTitle". Statuscode: ${response.statusCode}';
+}
+
+void searchWikipedia(List<String>? arguments) async {
   final String articleTitle;
 
   // If the user didn't pass in arguments, request an article title.
   if (arguments == null || arguments.isEmpty) {
-    // Await input and provide a default empty string if the input is null.
-    articleTitle = stdin.readLineSync() ?? '';
+    print('Please provide an article title:');
+    final inputStdin = stdin.readLineSync();
+    if (inputStdin == null || inputStdin.isEmpty) {
+      print('No article title provided. Exiting.');
+      return;
+    }
+    articleTitle = inputStdin;
   } else {
-    // Otherwise, join the arguments into a single string.
     articleTitle = arguments.join(' ');
   }
   print("Looking for articles about $articleTitle. Please wait.");
-  print('Here you go.');
-  print('Articles on $articleTitle');
+  var articleContent = await getWikipediaArticle(articleTitle);
+  print(articleContent);
 }
