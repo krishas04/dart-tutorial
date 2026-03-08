@@ -123,3 +123,78 @@ Inside, you'll see the `main` function. Every Dart program starts executing from
 - `Future`: Represents a single value or error available later.
 - `async + await`: async marks a function as asynchronous, and await pauses only that function until a Future completes.
 - `Stream`: Provides multiple asynchronous values over time, often consumed with await for.
+
+13. **Organizing Dart Code with Packages and Libraries**
+  `Dart Packages`
+    A package is the main unit for sharing and organizing Dart code.
+    It contains libraries, assets, dependencies, and configuration.
+
+    `Package Structure`
+    my_project/
+    │
+    ├── pubspec.yaml
+    ├── README.md
+    │
+    ├── lib/
+    │   └── my_project.dart
+    │
+    ├── bin/
+    │   └── main.dart
+    │
+    ├── test/
+    │
+    └── example/
+
+    `Important Directories and their purpose`
+    `lib/`	= Main code of the package
+    `bin/`	= Entry point for CLI applications
+    `test/`	= Unit tests
+    `example/`	= Example usage of the package
+
+  `Libraries in Dart`
+    A library is a reusable collection of Dart code. A Dart file becomes a library automatically.
+    Example:
+    ```library my_library;```
+    However, this declaration is optional.
+
+    `Exporting Libraries`
+    Packages often export internal files to provide a clean public API.
+    Example:
+
+    lib/
+    │
+    ├── command_runner.dart
+    └── src/
+        └── command_runner_base.dart
+
+    `Public API:`
+    ```export 'src/command_runner_base.dart';```
+
+    This means other packages can simply write:
+    ```import 'package:command_runner/command_runner.dart';```
+    without accessing internal files directly.
+
+  `The src Directory Convention`
+    Inside `lib/`, Dart packages often contain a `src/` folder.
+    - src/ contains **internal implementation**
+    - Files in src/ are not meant to be imported directly
+
+    Instead they are exposed through export.
+    Example: ```export 'src/command_runner_base.dart';```
+    This keeps the *public API stable*.
+
+  `Using Multiple Packages in a Project`
+    Large projects often contain multiple packages.
+    Example:
+    dartpedia/
+    │
+    ├── cli/
+    │   └── bin/cli.dart
+    │
+    └── command_runner/
+        └── lib/command_runner.dart
+
+    Here:
+    cli = application package
+    command_runner = reusable package
+    The CLI depends on the command runner.
