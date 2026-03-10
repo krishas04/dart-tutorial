@@ -198,3 +198,22 @@ Inside, you'll see the `main` function. Every Dart program starts executing from
     cli = application package
     command_runner = reusable package
     The CLI depends on the command runner.
+
+**Define relationships with classes**
+
+  **Argument Hierarchy**
+  - `OptionType`: flag or option
+  - `Argument (abstract)`: Base class for Option & Command
+  - `Option`: Represents CLI flags/options, supports short & long forms
+  - `Command (abstract)`: Defines executable actions, own options, run() logic
+  - `ArgResults`: Stores parsed commands & options, provides helpers (flag(), hasOption(), getOption())
+
+  **CommandRunner**
+  - Registers & runs commands
+  - Parses CLI input → executes selected command
+  - Provides usage info for app
+
+  **HelpCommand**
+  - Prints usage info
+  - Uses addFlag & addOption
+  - Accesses runner.commands for all commands
