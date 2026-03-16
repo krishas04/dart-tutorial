@@ -217,3 +217,40 @@ Inside, you'll see the `main` function. Every Dart program starts executing from
   - Prints usage info
   - Uses addFlag & addOption
   - Accesses runner.commands for all commands
+
+## Handle Errors Gracefully
+  1. Errors vs Exceptions
+    **Error**
+    - Represents `serious problems` in the program.
+    - Usually caused by programming mistakes.
+    - Should generally `not be caught`.
+
+    **Exception**
+    - Represents `expected problems` that can occur during program `execution`.
+    - These can be handled using `try/catch`.
+
+  2. Creating Custom Exceptions
+  - A custom `ArgumentException` class was created.
+  -  Fields included:
+    * `message` = Description of the error
+    * `command` =	Command being executed when the error occurred
+    * `argumentName` =	Argument that caused the error
+
+  3. Using try/catch for Error Handling
+    - The try/catch block allows the program to handle runtime failures safely.
+    - The throw keyword is used to manually trigger an exception when an error condition occurs.
+    - rethrow passes the caught exception up the call stack while preserving the original stack trace.
+
+  4. Error Handling Callback (onError)
+    - The CommandRunner now supports a custom error handling callback ie.`onError`. This allows users of the package to define their own error handling logic.
+
+  5. Input Validation in parse()
+    - The parse() method was updated to detect invalid CLI inputs.
+      * `Unknown command`	= First input must be a registered command
+      * `Multiple commands`	= Only one command allowed
+      * `Unknown option` = Option must exist for the command
+      * `Missing option` = argument	Option must have a value
+      * `Too many positional arguments`	= Only one command argument allowed
+
+  6. Exporting the Exception
+    - To make the new exception available to other packages, it was exported in `command_runner/lib/command_runner.dart`.
